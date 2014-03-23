@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta name="description" content="MaKleSoft - Transforming the Web">
+        <meta name="keywords" content="web,development,software,design,engineering,martin,kleinschrodt">
+        <meta name="author" content="Martin Kleinschrodt">
+        <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1.0, user-scalable=no"/>
+        <!-- JQUERY -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+        <script src="mdzr-3dtrans.js"></script>
+
+        <script type="text/javascript" charset="utf-8">
+            $(document).ready(function() {
+                function setPerspective(x, y) {
+                    $(document.body).css("perspective-origin", x + "px " + y + "px");
+                }
+
+                function bubbleHover() {
+                    var r = Math.floor(Math.random() * 256);
+                    var g = Math.floor(Math.random() * 256);
+                    var b = Math.floor(Math.random() * 256);
+                    $(this).css("background", "rgb(" + r + ", " + g + ", " + b + ")").css("color", "rgb(" + r + ", " + g + ", " + b + ")");
+                }
+
+                if (Modernizr.csstransforms3d) {
+                    // window.addEventListener("deviceorientation", function (event) {
+                    //     console.log(event.beta + ", " + event.gamma);
+                    //     var x = Math.cos(event.beta) * $(document).width();
+                    //     var y = Math.cos(event.gamma) * $(document).height();
+                    //     console.log(x + ", " + y);
+                    //     setPerspective(x, y);
+                    // }, true);
+                    $(document.body).mousemove(function(event) {
+                        setPerspective(event.pageX, event.pageY);
+                    });
+
+                    var w = $(document).width();
+                    var h = $(document).height();
+                    var n = Math.floor(w * h / 10000);
+                    var b = $(document.body);
+                    for (var i=0; i<n; i++) {
+                        var left = w/2 + Math.random() * w - w/2;
+                        var top = h/2 + Math.random() * h - h/2;
+                        var o = Math.random() * 0.5;
+                        $("<div>").addClass("bubble")
+                            .css({
+                                left: left + "px", top: top + "px", opacity: o,
+                                animation: "fall 10s linear infinite",
+                                "animation-delay": Math.random() * 10 + "s",
+                                transform: "translate3d(0, 0, 1000px)"
+                            })
+                            .mouseover(bubbleHover)
+                            .data("opacity", Math.random() * 0.5)
+                            .appendTo(b);
+                    }
+                }
+            });
+        </script>
+
+        <style>
+            @-webkit-keyframes fall {
+                from { -webkit-transform: translate3d(0, 0, 1000px); }
+                95% { opacity: attr(data-opacity); }
+                to { -webkit-transform: translate3d(0, 0, 0); opacity: 0; }
+            }
+            @-moz-keyframes fall {
+                from { -moz-transform: translate3d(0, 0, 1000px); }
+                95% { opacity: attr(data-opacity); }
+                to { -moz-transform: translate3d(0, 0, 0); opacity: 0; }
+            }
+            @-ms-keyframes fall {
+                from { -ms-transform: translate3d(0, 0, 1000px); }
+                95% { opacity: attr(data-opacity); }
+                to { -ms-transform: translate3d(0, 0, 0); opacity: 0; }
+            }
+            @keyframes fall {
+                from { transform: translate3d(0, 0, 1000px); }
+                95% { opacity: attr(data-opacity); }
+                to { transform: translate3d(0, 0, 0); opacity: 0; }
+            }
+
+            @-webkit-keyframes peek {
+                0% { -webkit-transform: rotateX(0) translate3d(0, 0, 0);}
+                50% { -webkit-transform: rotateX(45deg) translate3d(0, -23%, 0); }
+                100% { -webkit-transform: rotateX(0) translate3d(0, 0, 0); }
+            }
+            @-moz-keyframes peek {
+                0% { -moz-transform: rotateX(0) translate3d(0, 0, 0);}
+                50% { -moz-transform: rotateX(45deg) translate3d(0, -23%, 0); }
+                100% { -moz-transform: rotateX(0) translate3d(0, 0, 0); }
+            }
+            @-ms-keyframes peek {
+                0% { -ms-transform: rotateX(0) translate3d(0, 0, 0);}
+                50% { -ms-transform: rotateX(45deg) translate3d(0, -23%, 0); }
+                100% { -ms-transform: rotateX(0) translate3d(0, 0, 0); }
+            }
+            @keyframes peek {
+                0% { transform: rotateX(0) translate3d(0, 0, 0);}
+                50% { transform: rotateX(45deg) translate3d(0, -23%, 0); }
+                100% { transform: rotateX(0) translate3d(0, 0, 0); }
+            }
+
+
+            body {
+                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                font-size: 100%;
+                color: #333;
+                -webkit-perspective: 1000px;
+                -moz-perspective: 1000px;
+                -ms-perspective: 1000px;
+                perspective: 1000px;
+                overflow: hidden;
+                /*-webkit-transition: -webkit-perspective 2s ease-out;
+                -moz-transition: -moz-perspective 2s ease-out;
+                -ms-transition: -ms-perspective 2s ease-out;
+                transition: perspective 2s ease-out;*/
+                /*background: #f1f1f1;*/
+            }
+
+            body, html {
+                width: 100%;
+                height: 100%;
+                padding: 0;
+                margin: 0;
+            }
+
+            a {
+                text-decoration: none;
+                color: #333;
+            }
+
+            .roll-over {
+                position: relative;
+                display: inline-block;
+                overflow: visible;
+                vertical-align: top;
+                -webkit-perspective: 600px;
+                -moz-perspective: 600px;
+                -ms-perspective: 600px;
+                perspective: 600px;
+                -webkit-perspective-origin: 50% 50%;
+                -moz-perspective-origin: 50% 50%;
+                -ms-perspective-origin: 50% 50%;
+                perspective-origin: 50% 50%;
+            }
+
+            .roll-over span {
+                padding: 2px;
+                display: block;
+                position: relative;
+                /*background-color: #fff;*/
+                -webkit-transition: all 0.5s;
+                -moz-transition: all 0.5s;
+                -ms-transition: all 0.5s;
+                transition: all 0.5s;
+                /*-webkit-transform-origin: 50% 0%;
+                -moz-transform-origin: 50% 0%;
+                -ms-transform-origin: 50% 0%;
+                transform-origin: 50% 0%;*/
+                -webkit-transform-style: preserve-3d;
+                -moz-transform-style: preserve-3d;
+                -ms-transform-style: preserve-3d;
+                transform-style: preserve-3d;
+            }
+
+            .roll-over span:after {
+                padding: 2px;
+                content: attr(data-title);
+                display: block;
+                position: absolute;
+                left: 0;
+                top: 0;
+                color: #fff;
+                background-color: #333;
+                width: 100%;
+                text-align: center;
+                /*text-shadow: 0 1px 1px #fff;*/
+                backface-visibility: hidden;
+                -webkit-backface-visibility: hidden;
+                -moz-backface-visibility: hidden;
+                -ms-backface-visibility: hidden;
+                -webkit-transform-origin: 50% 0%;
+                -moz-transform-origin: 50% 0%;
+                -ms-transform-origin: 50% 0%;
+                transform-origin: 50% 0%;
+                -webkit-transform: translate3d(0, 100%, 0) rotateX(-90deg);
+                -moz-transform: translate3d(0, 100%, 0) rotateX(-90deg);
+                -ms-transform: translate3d(0, 100%, 0) rotateX(-90deg);
+                transform: translate3d(0, 100%, 0) rotateX(-90deg);
+            }
+
+            .roll-over:hover span {
+                -webkit-transform: translate3d(0, -50%, 0) rotateX(90deg);
+                -moz-transform: translate3d(0, -50%, 0) rotateX(90deg);
+                -ms-transform: translate3d(0, -50%, 0) rotateX(90deg);
+                transform: translate3d(0, -50%, 0) rotateX(90deg);
+            }
+
+            .content {
+                width: 320px;
+                height: 400px;
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+                text-align: center;
+                padding: 40px 0;
+            }
+
+            #logo {
+                width: 300px;
+                height: 300px;
+                -webkit-transform: translate3d(0, 0, 10px);
+                -moz-transform: translate3d(0, 0, 10px);
+                -ms-transform: translate3d(0, 0, 10px);
+                transform: translate3d(0, 0, 10px);
+            }
+
+            #name {
+                padding: 15px 0 20px 0;
+                -webkit-transform: translate3d(0, 0, 20px);
+                -moz-transform: translate3d(0, 0, 20px);
+                -ms-transform: translate3d(0, 0, 20px);
+                transform: translate3d(0, 0, 20px);
+            }
+
+            #name span {
+                font-size: 300%;
+                padding: 0 20px;
+                cursor: default;
+                -webkit-animation: peek 1s ease 1s;
+                -moz-animation: peek 1s ease 1s;
+                -ms-animation: peek 1s ease 1s;
+                animation: peek 1s ease 1s;
+            }
+
+            #name span:after {
+                line-height: 57px;
+                content: "Transforming the Web";
+                font-size: 45%;
+            }
+
+            #links {
+                -webkit-transform: translate3d(0, 0, 30px);
+                -moz-transform: translate3d(0, 0, 30px);
+                -ms-transform: translate3d(0, 0, 30px);
+                transform: translate3d(0, 0, 30px);
+            }
+
+            .bubble {
+                position: absolute;
+                width: 20px;
+                height: 20px;
+                color: #fff;
+                border-radius: 100px;
+                z-index: 1;
+                text-align: center;
+                line-height: 100px;
+                background: #333;
+                box-shadow: 0 0 3px;
+                color:  rgb(50, 50, 50);
+                -webkit-transition: background 0.5s, color 0.5s;
+                -moz-transition: background 0.5s, color 0.5s;
+                -ms-transition: background 0.5s, color 0.5s;
+                transition: background 0.5s, color 0.5s;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="content">
+            <img id="logo" src="logo.svg">
+            <div id="name" class="roll-over">
+                <span>MaKleSoft</span>
+            </div>
+            <div id="links">
+                <a href="mailto:contact@maklesoft.com" class="roll-over"><span data-title="contact@maklesoft.com">contact@maklesoft.com</span></a> | <a href="http://twitter.com/maklesoft/" target="_blank" class="roll-over"><span data-title="@MaKleSoft">@MaKleSoft</span></a>
+            </div>
+        </div>
+        <!-- GOOGLE ANALYTICS -->
+        <script type="text/javascript">
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-17922739-3']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        </script>
+    </body>
+</html>
